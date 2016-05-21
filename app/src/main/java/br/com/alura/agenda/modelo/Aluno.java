@@ -12,6 +12,8 @@ public class Aluno implements Serializable{
     private String telefone;
     private String site;
     private double nota;
+    private String caminhoFoto;
+
 
     public double getNota() {
         return nota;
@@ -59,6 +61,14 @@ public class Aluno implements Serializable{
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public String getCaminhoFoto() {
+        return caminhoFoto;
+    }
+
+    public void setCaminhoFoto(String caminhoFoto) {
+        this.caminhoFoto = caminhoFoto;
     }
 
     @Override

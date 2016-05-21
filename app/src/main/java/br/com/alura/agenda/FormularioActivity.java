@@ -46,9 +46,9 @@ public class FormularioActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent vaiParaCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
                 caminhoFoto = getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpg";
-                vaiParaCamera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(caminhoFoto)));
+                File fotoFile = new File(caminhoFoto);
+                vaiParaCamera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(fotoFile));
                 startActivityForResult(vaiParaCamera, CODE_CAMERA);
             }
         });
@@ -58,14 +58,10 @@ public class FormularioActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == Activity.RESULT_OK) {
-            if (resultCode == CODE_CAMERA) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == CODE_CAMERA) {
+                helper.carregaImagem(caminhoFoto);
 
-                ImageView foto = (ImageView) findViewById(R.id.foto_aluno_form);
-                Bitmap bm = BitmapFactory.decodeFile(caminhoFoto);
-                Bitmap novobm = Bitmap.createScaledBitmap(bm, 300, 300, true);
-                foto.setImageBitmap(novobm);
-                foto.setScaleType(ImageView.ScaleType.FIT_XY);
 
             }
         }
