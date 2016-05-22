@@ -94,4 +94,11 @@ public class AlunoDAO extends SQLiteOpenHelper{
         String[] params ={String.valueOf(aluno.getId())};
         db.update("Aluno", dados, "id = ?", params);
     }
+
+    public boolean ehAluno(String telefone) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM Aluno WHERE telefone = ?", new String[]{telefone});
+        int resultados = c.getCount();
+        return resultados > 0;
+    }
 }
