@@ -1,12 +1,15 @@
 package br.com.alura.agenda;
 
 import android.Manifest;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,7 +59,42 @@ public class ListaAlunosActivity extends AppCompatActivity{
             }
         });
 
+        Button mainButton = (Button) findViewById(R.id.main_button);
+        mainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToMain = new Intent(ListaAlunosActivity.this, MainActivity.class);
+                startActivity(goToMain);
+            }
+        });
+
         registerForContextMenu(ListaAlunos);
+        handleIntent(getIntent());
+
+        System.out.println(new AlunoDAO(this).buscaAlunos().toString());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            doMySearch(query);
+        }
+    }
+
+    private void doMySearch(String query) {
+        Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
+        AlunoDAO dao = new AlunoDAO(this);
+        List<Aluno> alunos = dao.busca(query);
+        dao.close();
+        AlunosAdapter adapter = new AlunosAdapter(this, alunos);
+        ListaAlunos.setAdapter(adapter);
+
     }
 
     private void carregaLista() {
@@ -72,7 +110,12 @@ public class ListaAlunosActivity extends AppCompatActivity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_lista_alunos, menu);
-        return true;
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

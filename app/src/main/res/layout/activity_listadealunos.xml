@@ -24,4 +24,21 @@
         android:background="@drawable/fundo"
         android:stateListAnimator="@null"
         android:id="@+id/novo_aluno"/>
+
+
+
+    <Button
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:text="-"
+        android:textColor="#ffffff"
+        android:textSize="40sp"
+        android:elevation="6dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/fundo"
+        android:stateListAnimator="@null"
+        android:id="@+id/main_button"/>
 </RelativeLayout>
